@@ -1,0 +1,7 @@
+.DS_Store
+composer.phar
+composer.lock
+vendor
+index.php
+config.yml
+table_dev

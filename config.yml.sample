@@ -1,0 +1,28 @@
+connection:
+  default:
+    type: mysql
+    host: localhost
+    port: 8889
+    dbname: higher
+    user: root
+    password: root
+    unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
+    charset: utf8
+  db2:
+    type: mysql
+    host: localhost
+    port: 8889
+    dbname: higher_users
+    user: root
+    password: root
+    unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
+    charset: utf8
+  db3:
+    type: mysql
+    host: localhost
+    port: 8889
+    dbname: higher_users
+    user: root
+    password: root
+    unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
+    charset: utf8

@@ -1,0 +1,25 @@
+{
+  "name": "ackintosh/Higher",
+  "description": "ORM library",
+  "keywords": ["ORM"],
+  "type": "library",
+  "license": "MIT",
+  "homepage": "http://github.com/ackintosh",
+  "authors": [
+    {
+      "name": "Akihito Nakano",
+      "email": "sora.akatsuki@gmail.com"
+    }
+  ],
+  "require": {
+      "symfony/yaml": "*"
+  }
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Ackintosh\\Higher": "src/"
+    }
+  }
+}
