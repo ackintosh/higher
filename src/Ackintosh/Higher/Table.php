@@ -55,6 +55,11 @@ class Table
         return (new Builder($this))->select($columns);
     }
 
+    public function insert($columns = null)
+    {
+        return (new Builder($this))->insert($columns);
+    }
+
     public function query($sql, $values)
     {
         //var_dump($sql);
