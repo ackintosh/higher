@@ -58,6 +58,20 @@ AND
 (  `users`.`id` = ? OR `users`.`id` = ? )
 ```
 
+```php
+<?php
+$res = $users
+    ->insert(['name', 'created'])
+    ->values(['testname', date('Y-m-d H:i:s')])
+    ->execute();
+```
+
+```sql
+INSERT INTO `users` ( `name`,`created` )  VALUES ( ?,? )
+```
+
+
+
 ## Install
 
 ```composer.json

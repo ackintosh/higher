@@ -49,3 +49,12 @@ $res = $users
  * (  `users`.`id` = ? OR `users`.`id` = ? )
  */
 
+
+$res = $users
+    ->insert(['name', 'created'])
+    ->values(['testname', date('Y-m-d H:i:s')])
+    ->execute();
+
+/**
+ * INSERT INTO `users` ( `name`,`created` )  VALUES ( ?,? )
+ */
