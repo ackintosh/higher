@@ -22,12 +22,9 @@ class Repository
         return $this->instantiateTable($table);
     }
 
-    public function instantiateTable($tableName)
+    private function instantiateTable($tableName)
     {
-        $s = array_map(function ($part) {
-            return ucfirst($part);
-        }, explode('_', $tableName));
-        $tableClassName = implode('', $s);
+        $tableClassName = $this->getClassName($tableName);
 
         require_once($this->config->getTableDir() . "/{$tableClassName}.php");
         $table = new $tableClassName;
@@ -36,6 +33,17 @@ class Repository
         $table->setConnection($connection);
 
         return $table;
+    }
+
+    private function getClassName($tableName)
+    {
+        $s = array_map(function ($part) {
+            return ucfirst($part);
+        }, explode('_', $tableName));
+
+        $tableClassName = implode('', $s);
+
+        return $tableClassName;
     }
 
     public function beginTransaction()

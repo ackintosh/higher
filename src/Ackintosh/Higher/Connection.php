@@ -21,24 +21,25 @@ class Connection
     public function __construct($params)
     {
         $this->params = $params;
-        $this->setUp($params);
     }
 
-    private function setUp($params)
+    public function setUp()
     {
         $this->pdo = new \PDO(
-            $this->makeDsn($params),
-            $params['user'],
-            $params['password']
+            $this->makeDsn($this->params),
+            $this->params['user'],
+            $this->params['password']
         );
 
-        $this->location = $params['host'] . '.' .$params['dbname'];
+        $this->location = $this->params['host'] . '.' .$this->params['dbname'];
+
+        return $this;
     }
 
-    private function makeDsn($params)
+    private function makeDsn()
     {
         $dsn = '';
-        foreach ($params as $k => $v) {
+        foreach ($this->params as $k => $v) {
             switch ($k) {
                 case 'user':
                 case 'password':
