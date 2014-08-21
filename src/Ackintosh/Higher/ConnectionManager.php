@@ -18,9 +18,9 @@ class ConnectionManager
             return $this->connections[$location];
         }
 
-        $this->connections[$location] = new Connection(
+        $this->connections[$location] = (new Connection(
             $this->config->getTableConnectionConfig($location)
-        );
+        ))->setUp();
 
         return $this->connections[$location];
     }
