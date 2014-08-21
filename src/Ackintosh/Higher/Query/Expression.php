@@ -5,6 +5,7 @@ abstract class Expression
 {
     protected $table;
     protected $column;
+    protected $expr;
     protected $value;
     protected $pre;
 
