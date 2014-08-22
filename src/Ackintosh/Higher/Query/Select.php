@@ -2,8 +2,9 @@
 namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Join;
 use Ackintosh\Higher\Query\ExpressionManager;
+use Ackintosh\Higher\Interfaces\DML as DMLInterface;
 
-class Select
+class Select implements DMLInterface
 {
     private $columns;
 
@@ -96,5 +97,10 @@ class Select
     public function getConnection()
     {
         return $this->from->getConnection();
+    }
+
+    public function afterExecute($statement)
+    {
+        return $statement->fetchAll();
     }
 }

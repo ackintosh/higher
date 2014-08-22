@@ -7,10 +7,8 @@ class Executor
     {
         list($sql, $values) = $builder->toString();
         $statement = $builder->getConnection()->prepare($sql);
-        if ($statement === false) {
-            // TODO: error handling
-        }
         $statement->execute($values);
-        return $statement->fetchAll();
+
+        return $builder->afterExecute($statement);
     }
 }

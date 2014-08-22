@@ -1,8 +1,12 @@
 <?php
 namespace Ackintosh\Higher\Query;
+use Ackintosh\Higher\Interfaces\DML as DMLInterface;
+use Ackintosh\Higher\Traits\DML;
 
-class Insert
+class Insert implements DMLInterface
 {
+    use DML;
+
     private $table;
     private $columns;
     private $values;

@@ -76,4 +76,9 @@ class Builder
     {
         return $this->main->getConnection();
     }
+
+    public function afterExecute($statement)
+    {
+        return $this->main->afterExecute($statement);
+    }
 }
