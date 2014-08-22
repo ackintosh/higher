@@ -5,11 +5,6 @@ use Ackintosh\Higher\Query\Select;
 class Builder
 {
     /**
-     * @var Ackintosh\Higher\Table
-     */
-    private $owner;
-
-    /**
      * @var 
      */
     private $main;
@@ -19,14 +14,20 @@ class Builder
      */
     private $columns;
 
-    public function __construct($table)
+    public function __construct()
     {
-        $this->owner = $table;
     }
 
     public function select($columns)
     {
-        $this->main = new Select($this->owner, $columns);
+        $this->main = new Select($columns);
+
+        return $this;
+    }
+
+    public function from($from)
+    {
+        $this->main->from($from);
 
         return $this;
     }
@@ -38,9 +39,9 @@ class Builder
         return $this;
     }
 
-    public function insert($columns)
+    public function insert($table, $columns)
     {
-        $this->main = new Insert($this->owner, $columns);
+        $this->main = new Insert($table, $columns);
 
         return $this;
     }
@@ -54,9 +55,7 @@ class Builder
 
     public function execute()
     {
-        list($sql, $values) = $this->main->toString();
-
-        return $this->owner->query($sql, $values);
+        return $this->main->execute();
     }
 
     public function where()

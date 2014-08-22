@@ -12,6 +12,11 @@ class ExpressionManager
         $this->exprs = [];
     }
 
+    public function _($table, $params)
+    {
+        return $this->_and($table, $params);
+    }
+
     public function _and($table, $params)
     {
         $this->exprs[] = new ExpressionAnd($table, $params);

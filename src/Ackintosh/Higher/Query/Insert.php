@@ -36,5 +36,26 @@ class Insert
 
         return [$sql, $this->values];
     }
+
+    /**
+     *
+     * @params  string          $sql
+     * @return  PDO::Statement
+     */
+    public function prepare($sql)
+    {
+        return $this->owner->prepare($sql);
+    }
+
+    public function execute()
+    {
+        list($sql, $values) = $this->toString();
+
+        $statement = $this->prepare($sql);
+        if ($statement === false) {
+            // TODO: error handling
+        }
+        return $statement->execute($values);
+    }
 }
 

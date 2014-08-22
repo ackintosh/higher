@@ -27,11 +27,11 @@ $repo = new Ackintosh\Higher\Repository($c);
 $users = $repo->get('users');
 $orders = $repo->get('orders');
 
-$res = $users
-    ->select([
+$res = Ackintosh\Higher\Query::select([
         [$users, 'name', 'addr'],
         [$orders, 'total'],
     ])
+    ->from($users)
     ->join($orders, ['id' => 'user_id'])
     ->where(
         function ($expr) use ($users, $orders) {
@@ -64,8 +64,7 @@ AND
 
 ```php
 <?php
-$res = $users
-    ->insert(['name', 'created'])
+$res = Ackintosh\Higher\Query::insert($users, ['name', 'created'])
     ->values(['testname', date('Y-m-d H:i:s')])
     ->execute();
 ```

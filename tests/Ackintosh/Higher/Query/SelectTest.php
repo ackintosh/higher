@@ -11,9 +11,9 @@ class SelectTest extends PHPUnit_Framework_TestCase
     {
         $table = new Table;
         $columns = ['col1', 'col2'];
-        $select = new Select($table, $columns);
+        $select = new Select($columns);
+        $select->from($table);
 
-        $this->assertSame($table, TestHelper::getPrivateProperty($select, 'owner'));
         $this->assertSame($columns, TestHelper::getPrivateProperty($select, 'columns'));
         $this->assertSame([], TestHelper::getPrivateProperty($select, 'joins'));
         $this->assertSame([], TestHelper::getPrivateProperty($select, 'expressions'));
@@ -26,7 +26,8 @@ class SelectTest extends PHPUnit_Framework_TestCase
     {
         $table = new Table;
         $columns = ['col1', 'col2'];
-        $select = new Select($table, $columns);
+        $select = new Select($columns);
+        $select->from($table);
 
         $table2 = new Table;
         $select->join($table2, ['on1' => 'on2']);

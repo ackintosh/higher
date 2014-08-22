@@ -50,25 +50,13 @@ class Table
         return $this->location;
     }
 
-    public function select($columns)
+    /**
+     *
+     * @params  string          $sql
+     * @return  PDO::Statement
+     */
+    public function prepare($sql)
     {
-        return (new Builder($this))->select($columns);
-    }
-
-    public function insert($columns = null)
-    {
-        return (new Builder($this))->insert($columns);
-    }
-
-    public function query($sql, $values)
-    {
-        //var_dump($sql);
-        $statement = $this->conn->prepare($sql);
-        if ($statement === false) {
-            // TODO: error handling
-        }
-        $statement->execute($values);
-
-        return $statement->fetchAll();
+        return $this->conn->prepare($sql);
     }
 }
