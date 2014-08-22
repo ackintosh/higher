@@ -35,12 +35,12 @@ $res = Ackintosh\Higher\Query::select([
     ->join($orders, ['id' => 'user_id'])
     ->where(
         function ($expr) use ($users, $orders) {
-            $expr->_and($users, ['id', '=', 2]);
+            $expr->_($users, ['id', '=', 2]);
             $expr->_or($users, ['id', '=', 3]);
         },
         'AND',
         function ($expr) use ($users, $orders) {
-            $expr->_and($users, ['id', '=', 2]);
+            $expr->_($users, ['id', '=', 2]);
             $expr->_or($users, ['id', '=', 3]);
         }
         )

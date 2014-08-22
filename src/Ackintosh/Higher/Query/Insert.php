@@ -3,13 +3,13 @@ namespace Ackintosh\Higher\Query;
 
 class Insert
 {
-    private $owner;
+    private $table;
     private $columns;
     private $values;
 
-    public function __construct($owner, $columns)
+    public function __construct($table, $columns)
     {
-        $this->owner = $owner;
+        $this->table = $table;
         $this->columns = $columns;
         $this->values = [];
     }
@@ -23,7 +23,7 @@ class Insert
 
     public function toString()
     {
-        $sql = 'INSERT INTO `' . $this->owner->getName() .'`';
+        $sql = 'INSERT INTO `' . $this->table->getName() .'`';
 
         if ($this->columns) {
             $cols = array_map(function ($c) {
@@ -37,25 +37,9 @@ class Insert
         return [$sql, $this->values];
     }
 
-    /**
-     *
-     * @params  string          $sql
-     * @return  PDO::Statement
-     */
-    public function prepare($sql)
+    public function getConnection()
     {
-        return $this->owner->prepare($sql);
-    }
-
-    public function execute()
-    {
-        list($sql, $values) = $this->toString();
-
-        $statement = $this->prepare($sql);
-        if ($statement === false) {
-            // TODO: error handling
-        }
-        return $statement->execute($values);
+        return $this->table->getConnection();
     }
 }
 

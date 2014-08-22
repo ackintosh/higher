@@ -93,26 +93,8 @@ class Select
         return [$sql, $values];
     }
 
-    /**
-     *
-     * @params  string          $sql
-     * @return  PDO::Statement
-     */
-    public function prepare($sql)
+    public function getConnection()
     {
-        return $this->from->prepare($sql);
-    }
-
-    public function execute()
-    {
-        list($sql, $values) = $this->toString();
-
-        $statement = $this->prepare($sql);
-        if ($statement === false) {
-            // TODO: error handling
-        }
-        $statement->execute($values);
-
-        return $statement->fetchAll();
+        return $this->from->getConnection();
     }
 }

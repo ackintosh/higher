@@ -45,6 +45,11 @@ class Table
         return $this;
     }
 
+    public function getConnection()
+    {
+        return $this->conn;
+    }
+
     public function getLocation()
     {
         return $this->location;

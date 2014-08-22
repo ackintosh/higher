@@ -1,6 +1,7 @@
 <?php
 namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Select;
+use Ackintosh\Higher\Query\Executor;
 
 class Builder
 {
@@ -55,7 +56,8 @@ class Builder
 
     public function execute()
     {
-        return $this->main->execute();
+        $executor = new Executor;
+        return $executor->perform($this);
     }
 
     public function where()
@@ -63,5 +65,15 @@ class Builder
         call_user_func_array([$this->main, 'where'], func_get_args());
 
         return $this;
+    }
+
+    public function toString()
+    {
+        return $this->main->toString();
+    }
+
+    public function getConnection()
+    {
+        return $this->main->getConnection();
     }
 }
