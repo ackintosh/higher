@@ -5,11 +5,6 @@ use Ackintosh\Higher\Query\Builder;
 class Table
 {
     /**
-     * @var Ackintosh\Higher\Connection
-     */
-    private $conn;
-
-    /**
      * @var string
      */
     protected $name;
@@ -38,30 +33,8 @@ class Table
         return $this->name;
     }
 
-    public function setConnection($conn)
-    {
-        $this->conn = $conn;
-
-        return $this;
-    }
-
-    public function getConnection()
-    {
-        return $this->conn;
-    }
-
     public function getLocation()
     {
         return $this->location;
-    }
-
-    /**
-     *
-     * @params  string          $sql
-     * @return  PDO::Statement
-     */
-    public function prepare($sql)
-    {
-        return $this->conn->prepare($sql);
     }
 }

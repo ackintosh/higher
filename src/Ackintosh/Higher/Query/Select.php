@@ -94,9 +94,9 @@ class Select implements DMLInterface
         return [$sql, $values];
     }
 
-    public function getConnection()
+    public function getLocation()
     {
-        return $this->from->getConnection();
+        return $this->from->getLocation();
     }
 
     public function afterExecute($statement)

@@ -17,17 +17,22 @@ Named "Higher" was inspired by this song. (｢ﾟДﾟ)｢ｶﾞｳｶﾞｳ
 ## Usage
 ```php
 <?php
-$c = new Ackintosh\Higher\Config;
-$c->setConfigFile('config.yml')
+$config = (new Ackintosh\Higher\Config())
+    ->setConfigFile('config.yml')
     ->parse()
     ->setTableDir(__DIR__ . '/table');
 
-$repo = new Ackintosh\Higher\Repository($c);
+$repo = new Ackintosh\Higher\Repository($config);
+$connectionManager = new Ackintosh\Higher\ConnectionManager($config);
+$query = new Ackintosh\Higher\Query($connectionManager);
 
 $users = $repo->get('users');
 $orders = $repo->get('orders');
+```
 
-$res = Ackintosh\Higher\Query::select([
+### SELECT
+```php
+$res = $query->select([
         [$users, 'name', 'addr'],
         [$orders, 'total'],
     ])
@@ -62,9 +67,10 @@ AND
 (  `users`.`id` = ? OR `users`.`id` = ? )
 ```
 
+### INSERT
 ```php
 <?php
-$res = Ackintosh\Higher\Query::insert($users, ['name', 'created'])
+$res = $query->insert($users, ['name', 'created'])
     ->values(['testname', date('Y-m-d H:i:s')])
     ->execute();
 ```

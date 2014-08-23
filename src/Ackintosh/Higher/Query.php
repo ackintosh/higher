@@ -4,13 +4,20 @@ use Ackintosh\Higher\Query\Builder;
 
 class Query
 {
-    public static function select($columns)
+    private $connectionManager;
+
+    public function __construct($connectionManager)
     {
-        return (new Builder())->select($columns);
+        $this->connectionManager = $connectionManager;
     }
 
-    public static function insert($table, $columns)
+    public function select($columns)
     {
-        return (new Builder())->insert($table, $columns);
+        return (new Builder($this->connectionManager))->select($columns);
+    }
+
+    public function insert($table, $columns)
+    {
+        return (new Builder($this->connectionManager))->insert($table, $columns);
     }
 }

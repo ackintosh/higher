@@ -15,8 +15,11 @@ class Builder
      */
     private $columns;
 
-    public function __construct()
+    private $connectionManager;
+
+    public function __construct($connectionManager)
     {
+        $this->connectionManager = $connectionManager;
     }
 
     public function select($columns)
@@ -74,7 +77,7 @@ class Builder
 
     public function getConnection()
     {
-        return $this->main->getConnection();
+        return $this->connectionManager->get($this->main->getLocation());
     }
 
     public function afterExecute($statement)

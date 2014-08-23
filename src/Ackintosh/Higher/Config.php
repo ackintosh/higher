@@ -62,6 +62,6 @@ class Config
 
     public function getTableConnectionConfig($location)
     {
-        return (isset($this->config['connection'][$location])) ? $this->config['connection'][$location] : $this->config['connection']['default'];
+        return (isset($this->config[$location])) ? $this->config[$location] : $this->config['default'];
     }
 }

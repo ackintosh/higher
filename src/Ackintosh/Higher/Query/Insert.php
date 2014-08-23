@@ -41,9 +41,9 @@ class Insert implements DMLInterface
         return [$sql, $this->values];
     }
 
-    public function getConnection()
+    public function getLocation()
     {
-        return $this->table->getConnection();
+        return $this->table->getLocation();
     }
 }
 
