@@ -8,7 +8,7 @@ master : [![Build Status](https://travis-ci.org/ackintosh/higher.svg?branch=mast
 develop : [![Build Status](https://travis-ci.org/ackintosh/higher.svg?branch=develop)](https://travis-ci.org/ackintosh/higher)
 
 ## Description
-Named "Higher" was inspired by this song. (｢ﾟДﾟ)｢ｶﾞｳｶﾞｳ
+Named "Higher" was inspired by this song. (｢ﾟДﾟ)｢ gow gow
 
 [![MAN WITH A MISSION : higher](http://img.youtube.com/vi/RIBqsb5yIx8/0.jpg)](https://www.youtube.com/watch?v=RIBqsb5yIx8)
 
@@ -72,9 +72,13 @@ AND
 ### INSERT
 ```php
 <?php
+$connectionManager->begin();
+
 $res = $query->insert($users, ['name', 'created'])
     ->values(['testname', date('Y-m-d H:i:s')])
     ->execute();
+
+$connectionManager->commit();
 ```
 
 ```sql

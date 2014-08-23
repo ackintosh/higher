@@ -50,9 +50,13 @@ $ret = $query->select([
  */
 
 
+$connectionManager->begin();
+
 $ret = $query->insert($users, ['name', 'created'])
     ->values(['testname', date('Y-m-d H:i:s')])
     ->execute();
+
+$connectionManager->commit();
 
 /**
  * INSERT INTO `users` ( `name`,`created` )  VALUES ( ?,? )
