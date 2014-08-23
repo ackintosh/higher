@@ -1,7 +1,7 @@
 <?php
 namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Join;
-use Ackintosh\Higher\Query\ExpressionManager;
+use Ackintosh\Higher\Query\Expression\Manager;
 use Ackintosh\Higher\Interfaces\DML as DMLInterface;
 use Ackintosh\Higher\Traits\DML;
 
@@ -53,7 +53,7 @@ class Select implements DMLInterface
                 continue;
             }
 
-            $expr = new ExpressionManager;
+            $expr = new Manager;
             call_user_func_array($arg, [$expr]);
             $this->expressions[] = $expr;
         }

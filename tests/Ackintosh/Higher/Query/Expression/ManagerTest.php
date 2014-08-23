@@ -1,12 +1,12 @@
 <?php
-use Ackintosh\Higher\Query\ExpressionManager;
+use Ackintosh\Higher\Query\Expression\Manager;
 use Ackintosh\Higher\Table;
 
-class ExpressionManagerTest extends PHPUnit_Framework_TestCase
+class ManagerTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->manager = new ExpressionManager;
+        $this->manager = new Manager;
     }
 
     /**
@@ -25,7 +25,7 @@ class ExpressionManagerTest extends PHPUnit_Framework_TestCase
         $this->manager->_and(new Table, [0, 0, 0]);
         $exprs = TestHelper::getPrivateProperty($this->manager, 'exprs');
 
-        $this->assertInstanceOf('Ackintosh\Higher\Query\ExpressionAnd', array_pop($exprs));
+        $this->assertInstanceOf('Ackintosh\Higher\Query\Expression\Andx', array_pop($exprs));
     }
 
     /**
@@ -36,7 +36,7 @@ class ExpressionManagerTest extends PHPUnit_Framework_TestCase
         $this->manager->_or(new Table, [0, 0, 0]);
         $exprs = TestHelper::getPrivateProperty($this->manager, 'exprs');
 
-        $this->assertInstanceOf('Ackintosh\Higher\Query\ExpressionOr', array_pop($exprs));
+        $this->assertInstanceOf('Ackintosh\Higher\Query\Expression\Orx', array_pop($exprs));
     }
 
     /**
