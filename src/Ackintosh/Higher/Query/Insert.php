@@ -1,15 +1,19 @@
 <?php
 namespace Ackintosh\Higher\Query;
+use Ackintosh\Higher\Interfaces\DML as DMLInterface;
+use Ackintosh\Higher\Traits\DML;
 
-class Insert
+class Insert implements DMLInterface
 {
-    private $owner;
+    use DML;
+
+    private $table;
     private $columns;
     private $values;
 
-    public function __construct($owner, $columns)
+    public function __construct($table, $columns)
     {
-        $this->owner = $owner;
+        $this->table = $table;
         $this->columns = $columns;
         $this->values = [];
     }
@@ -23,7 +27,7 @@ class Insert
 
     public function toString()
     {
-        $sql = 'INSERT INTO `' . $this->owner->getName() .'`';
+        $sql = 'INSERT INTO `' . $this->table->getName() .'`';
 
         if ($this->columns) {
             $cols = array_map(function ($c) {
@@ -35,6 +39,11 @@ class Insert
         $sql .= ' VALUES ( ' . implode(',', array_fill(0, count($this->values), '?')) . ' ) ';
 
         return [$sql, $this->values];
+    }
+
+    public function getLocation()
+    {
+        return $this->table->getLocation();
     }
 }
 

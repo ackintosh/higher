@@ -1,27 +1,63 @@
-connection:
-  default:
+default:
+  master:
     type: mysql
-    host: localhost
+    host: default_master
     port: 8889
     dbname: higher
     user: root
     password: root
     unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
     charset: utf8
-  db2:
+  slaves:
+    - type: mysql
+      host: default_slave1
+      port: 8889
+      dbname: higher
+      user: root
+      password: root
+      unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
+      charset: utf8
+    - type: mysql
+      host: default_slave2
+      port: 8889
+      dbname: higher
+      user: root
+      password: root
+      unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
+      charset: utf8
+db2:
+  master:
     type: mysql
-    host: localhost
+    host: db2_master
     port: 8889
-    dbname: higher_users
+    dbname: higher
     user: root
     password: root
     unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
     charset: utf8
-  db3:
+  slaves:
+    - type: mysql
+      host: db2_slave1
+      port: 8889
+      dbname: higher
+      user: root
+      password: root
+      unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
+      charset: utf8
+    - type: mysql
+      host: db2_slave2
+      port: 8889
+      dbname: higher
+      user: root
+      password: root
+      unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock
+      charset: utf8
+db3:
+  master:
     type: mysql
-    host: localhost
+    host: db3
     port: 8889
-    dbname: higher_users
+    dbname: higher
     user: root
     password: root
     unix_socket: /Applications/MAMP/tmp/mysql/mysql.sock

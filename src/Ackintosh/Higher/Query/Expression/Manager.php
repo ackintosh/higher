@@ -1,9 +1,9 @@
 <?php
-namespace Ackintosh\Higher\Query;
-use Ackintosh\Higher\Query\ExpressionAnd;
-use Ackintosh\Higher\Query\ExpressionOr;
+namespace Ackintosh\Higher\Query\Expression;
+use Ackintosh\Higher\Query\Expression\Andx;
+use Ackintosh\Higher\Query\Expression\Orx;
 
-class ExpressionManager
+class Manager
 {
     private $exprs;
 
@@ -12,14 +12,19 @@ class ExpressionManager
         $this->exprs = [];
     }
 
+    public function _($table, $params)
+    {
+        return $this->_and($table, $params);
+    }
+
     public function _and($table, $params)
     {
-        $this->exprs[] = new ExpressionAnd($table, $params);
+        $this->exprs[] = new Andx($table, $params);
     }
 
     public function _or($table, $params)
     {
-        $this->exprs[] = new ExpressionOr($table, $params);
+        $this->exprs[] = new Orx($table, $params);
     }
 
     public function toString()

@@ -30,6 +30,7 @@ class Connection
             $this->params['user'],
             $this->params['password']
         );
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         $this->location = $this->params['host'] . '.' .$this->params['dbname'];
 

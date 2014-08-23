@@ -13,37 +13,44 @@ Named "Higher" was inspired by this song. (｢ﾟДﾟ)｢ｶﾞｳｶﾞｳ
 [![MAN WITH A MISSION : higher](http://img.youtube.com/vi/RIBqsb5yIx8/0.jpg)](https://www.youtube.com/watch?v=RIBqsb5yIx8)
 
 ## Requirement
+PHP 5.4 or higher
 
 ## Usage
 ```php
 <?php
-$c = new Ackintosh\Higher\Config;
-$c->setConfigFile('config.yml')
+$config = (new Ackintosh\Higher\Config())
+    ->setConfigFile('config.yml')
     ->parse()
     ->setTableDir(__DIR__ . '/table');
 
-$repo = new Ackintosh\Higher\Repository($c);
+$repo = new Ackintosh\Higher\Repository($config);
+$connectionManager = new Ackintosh\Higher\ConnectionManager($config);
+$query = new Ackintosh\Higher\Query($connectionManager);
 
 $users = $repo->get('users');
 $orders = $repo->get('orders');
+```
 
-$res = $users
-    ->select([
+### SELECT
+```php
+$res = $query->select([
         [$users, 'name', 'addr'],
         [$orders, 'total'],
     ])
+    ->from($users)
     ->join($orders, ['id' => 'user_id'])
     ->where(
         function ($expr) use ($users, $orders) {
-            $expr->_and($users, ['id', '=', 2]);
+            $expr->_($users, ['id', '=', 2]);
             $expr->_or($users, ['id', '=', 3]);
         },
         'AND',
         function ($expr) use ($users, $orders) {
-            $expr->_and($users, ['id', '=', 2]);
+            $expr->_($users, ['id', '=', 2]);
             $expr->_or($users, ['id', '=', 3]);
         }
         )
+    ->useMaster()// use the master DB explicitly.
     ->execute();
 ```
 
@@ -62,10 +69,10 @@ AND
 (  `users`.`id` = ? OR `users`.`id` = ? )
 ```
 
+### INSERT
 ```php
 <?php
-$res = $users
-    ->insert(['name', 'created'])
+$res = $query->insert($users, ['name', 'created'])
     ->values(['testname', date('Y-m-d H:i:s')])
     ->execute();
 ```

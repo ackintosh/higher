@@ -1,14 +1,10 @@
 <?php
 namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Select;
+use Ackintosh\Higher\Query\Executor;
 
 class Builder
 {
-    /**
-     * @var Ackintosh\Higher\Table
-     */
-    private $owner;
-
     /**
      * @var 
      */
@@ -19,14 +15,31 @@ class Builder
      */
     private $columns;
 
-    public function __construct($table)
+    /**
+     * @var Ackintosh\Higher\ConnectionManager
+     */
+    private $connectionManager;
+
+    /**
+     * @var bool
+     */
+    private $useMasterExplicitly = false;
+
+    public function __construct($connectionManager)
     {
-        $this->owner = $table;
+        $this->connectionManager = $connectionManager;
     }
 
     public function select($columns)
     {
-        $this->main = new Select($this->owner, $columns);
+        $this->main = new Select($columns);
+
+        return $this;
+    }
+
+    public function from($from)
+    {
+        $this->main->from($from);
 
         return $this;
     }
@@ -38,9 +51,9 @@ class Builder
         return $this;
     }
 
-    public function insert($columns)
+    public function insert($table, $columns)
     {
-        $this->main = new Insert($this->owner, $columns);
+        $this->main = new Insert($table, $columns);
 
         return $this;
     }
@@ -52,11 +65,17 @@ class Builder
         return $this;
     }
 
+    public function useMaster()
+    {
+        $this->useMasterExplicitly = true;
+
+        return $this;
+    }
+
     public function execute()
     {
-        list($sql, $values) = $this->main->toString();
-
-        return $this->owner->query($sql, $values);
+        $executor = new Executor;
+        return $executor->perform($this);
     }
 
     public function where()
@@ -64,5 +83,21 @@ class Builder
         call_user_func_array([$this->main, 'where'], func_get_args());
 
         return $this;
+    }
+
+    public function toString()
+    {
+        return $this->main->toString();
+    }
+
+    public function getConnection()
+    {
+        $useSlave = ($this->useMasterExplicitly === true) ? false : $this->main->useSlave();
+        return $this->connectionManager->get($this->main->getLocation(), $useSlave);
+    }
+
+    public function afterExecute($statement)
+    {
+        return $this->main->afterExecute($statement);
     }
 }

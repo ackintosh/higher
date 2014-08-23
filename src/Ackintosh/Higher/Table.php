@@ -5,11 +5,6 @@ use Ackintosh\Higher\Query\Builder;
 class Table
 {
     /**
-     * @var Ackintosh\Higher\Connection
-     */
-    private $conn;
-
-    /**
      * @var string
      */
     protected $name;
@@ -38,37 +33,8 @@ class Table
         return $this->name;
     }
 
-    public function setConnection($conn)
-    {
-        $this->conn = $conn;
-
-        return $this;
-    }
-
     public function getLocation()
     {
         return $this->location;
-    }
-
-    public function select($columns)
-    {
-        return (new Builder($this))->select($columns);
-    }
-
-    public function insert($columns = null)
-    {
-        return (new Builder($this))->insert($columns);
-    }
-
-    public function query($sql, $values)
-    {
-        //var_dump($sql);
-        $statement = $this->conn->prepare($sql);
-        if ($statement === false) {
-            // TODO: error handling
-        }
-        $statement->execute($values);
-
-        return $statement->fetchAll();
     }
 }

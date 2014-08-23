@@ -1,6 +1,5 @@
 <?php
 namespace Ackintosh\Higher;
-use Ackintosh\Higher\ConnectionManager;
 
 class Repository
 {
@@ -9,12 +8,9 @@ class Repository
      */
     private $config;
 
-    private $connectionManager;
-
     public function __construct($config)
     {
         $this->config = $config;
-        $this->connectionManager = new ConnectionManager($config);
     }
 
     public function get($table)
@@ -29,9 +25,6 @@ class Repository
         require_once($this->config->getTableDir() . "/{$tableClassName}.php");
         $table = new $tableClassName;
 
-        $connection = $this->connectionManager->get($table->getLocation());
-        $table->setConnection($connection);
-
         return $table;
     }
 
@@ -44,17 +37,5 @@ class Repository
         $tableClassName = implode('', $s);
 
         return $tableClassName;
-    }
-
-    public function beginTransaction()
-    {
-    }
-
-    public function commit()
-    {
-    }
-
-    public function rollback()
-    {
     }
 }

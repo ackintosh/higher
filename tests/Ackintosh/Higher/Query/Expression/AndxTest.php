@@ -1,5 +1,5 @@
 <?php
-use Ackintosh\Higher\Query\ExpressionAnd;
+use Ackintosh\Higher\Query\Expression\Andx;
 use Ackintosh\Higher\Table;
 
 class ExpressionTest extends PHPUnit_Framework_TestCase
@@ -13,7 +13,7 @@ class ExpressionTest extends PHPUnit_Framework_TestCase
         $params[0] = '';
         $params[1] = '';
         $params[2] = '';
-        $expression = new ExpressionAnd($table, $params);
+        $expression = new Andx($table, $params);
 
         $this->assertSame('AND', TestHelper::getPrivateProperty($expression, 'pre'));
     }
@@ -28,7 +28,7 @@ class ExpressionTest extends PHPUnit_Framework_TestCase
         $params[1] = 'testexpr';
         $params[2] = 'testvlaue';
 
-        $expression = new ExpressionAnd($table, $params);
+        $expression = new Andx($table, $params);
 
         $this->assertSame($table, TestHelper::getPrivateProperty($expression, 'table'));
         $this->assertSame($params[0], TestHelper::getPrivateProperty($expression, 'column'));

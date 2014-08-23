@@ -14,7 +14,7 @@ class InsertTest extends PHPUnit_Framework_TestCase
 
         $insert = new Insert($table, $columns);
 
-        $this->assertSame($table, TestHelper::getPrivateProperty($insert, 'owner'));
+        $this->assertSame($table, TestHelper::getPrivateProperty($insert, 'table'));
         $this->assertSame($columns, TestHelper::getPrivateProperty($insert, 'columns'));
     }
 

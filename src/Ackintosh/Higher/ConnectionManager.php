@@ -12,17 +12,31 @@ class ConnectionManager
         $this->config = $config;
     }
 
-    public function get($location)
+    public function get($location, $useSlave = false)
     {
-        if (isset($this->connections[$location])) {
-            return $this->connections[$location];
+        // If we have no configuration for slave,
+        // ConnectionManager uses master connection.
+        if ($useSlave === true && count($this->config->getConnectionConfig($location, 'slaves')) === 0 ) {
+            $useSlave = false;
         }
 
-        $this->connections[$location] = (new Connection(
-            $this->config->getTableConnectionConfig($location)
-        ))->setUp();
+        if ($useSlave === false) {
+            $param = $this->config->getConnectionConfig($location);
+            $connectionKey = 'master';
+        } else {
+            $params = $this->config->getConnectionConfig($location, 'slaves');
+            $slaveKey = array_rand($params);
+            $param = $params[$slaveKey];
+            $connectionKey = 'slave' . $slaveKey;
+        }
 
-        return $this->connections[$location];
+        if (isset($this->connections[$location][$connectionKey])) {
+            return $this->connections[$location][$connectionKey];
+        }
+
+        $this->connections[$location][$connectionKey] = (new Connection($param))->setUp();
+
+        return $this->connections[$location][$connectionKey];
     }
 
     public function getEntityDir()

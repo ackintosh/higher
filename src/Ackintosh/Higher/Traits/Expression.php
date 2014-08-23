@@ -1,13 +1,12 @@
 <?php
-namespace Ackintosh\Higher\Query;
+namespace Ackintosh\Higher\Traits;
 
-abstract class Expression
+trait Expression
 {
     protected $table;
     protected $column;
     protected $expr;
     protected $value;
-    protected $pre;
 
     public function __construct($table, $params)
     {

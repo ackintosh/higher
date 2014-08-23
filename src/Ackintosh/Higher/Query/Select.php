@@ -1,26 +1,44 @@
 <?php
 namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Join;
-use Ackintosh\Higher\Query\ExpressionManager;
+use Ackintosh\Higher\Query\Expression\Manager;
+use Ackintosh\Higher\Interfaces\DML as DMLInterface;
+use Ackintosh\Higher\Traits\DML;
 
-class Select
+class Select implements DMLInterface
 {
-    private $owner;
+    use DML;
+
+    /**
+     * @see DML::useSlave()
+     */
+    protected $useSlave = true;
+
     private $columns;
+
+    /**
+     * @var Ackintosh\Higher\Table
+     */
+    private $from;
+
     private $joins;
     private $expressions;
 
-    public function __construct($owner, $columns)
+    public function __construct($columns)
     {
-        $this->owner = $owner;
         $this->columns = $columns;
         $this->joins = [];
         $this->expressions = [];
     }
 
+    public function from($table)
+    {
+        $this->from = $table;
+    }
+
     public function join($table, Array $on)
     {
-        $this->joins[] = new Join($this->owner, $table, $on);
+        $this->joins[] = new Join($this->from, $table, $on);
 
         return;
     }
@@ -35,7 +53,7 @@ class Select
                 continue;
             }
 
-            $expr = new ExpressionManager;
+            $expr = new Manager;
             call_user_func_array($arg, [$expr]);
             $this->expressions[] = $expr;
         }
@@ -49,17 +67,17 @@ class Select
 
         $columns = array_map(function ($col) {
             $tableName = array_shift($col)->getName();
-            $ret = '';
+            $ret = [];
             foreach ($col as $c) {
-                $ret .= "`{$tableName}`.`{$c}`";
+                $ret[] = "`{$tableName}`.`{$c}`";
             }
 
-            return $ret;
+            return implode(',', $ret);
         }, $this->columns);
 
         $sql = $str . implode(',', $columns);
 
-        $sql .= ' FROM `' . $this->owner->getName() . '`';
+        $sql .= ' FROM `' . $this->from->getName() . '`';
 
         foreach ($this->joins as $j) {
             $sql .= ' ' . $j->toString();
@@ -82,5 +100,18 @@ class Select
         }
 
         return [$sql, $values];
+    }
+
+    public function getLocation()
+    {
+        return $this->from->getLocation();
+    }
+
+    /**
+     * @override    DML::afterExecute($statement)
+     */
+    public function afterExecute($statement)
+    {
+        return $statement->fetchAll();
     }
 }
