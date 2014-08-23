@@ -72,9 +72,13 @@ AND
 ### INSERT
 ```php
 <?php
+$connectionManager->begin();
+
 $res = $query->insert($users, ['name', 'created'])
     ->values(['testname', date('Y-m-d H:i:s')])
     ->execute();
+
+$connectionManager->commit();
 ```
 
 ```sql
