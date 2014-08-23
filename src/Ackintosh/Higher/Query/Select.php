@@ -3,9 +3,17 @@ namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Join;
 use Ackintosh\Higher\Query\ExpressionManager;
 use Ackintosh\Higher\Interfaces\DML as DMLInterface;
+use Ackintosh\Higher\Traits\DML;
 
 class Select implements DMLInterface
 {
+    use DML;
+
+    /**
+     * @see DML::useSlave()
+     */
+    protected $useSlave = true;
+
     private $columns;
 
     /**
@@ -99,6 +107,9 @@ class Select implements DMLInterface
         return $this->from->getLocation();
     }
 
+    /**
+     * @override    DML::afterExecute($statement)
+     */
     public function afterExecute($statement)
     {
         return $statement->fetchAll();

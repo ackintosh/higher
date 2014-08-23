@@ -1,23 +1,22 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-$config = new Ackintosh\Higher\Config;
-
 /**
  * Move config.yml.sample to config.yml
  */
-$config->setConfigFile('config.yml')
+$config = (new Ackintosh\Higher\Config())
     ->parse()
     ->setTableDir(__DIR__ . '/table');
 
 $repo = new Ackintosh\Higher\Repository($config);
+$connectionManager = new Ackintosh\Higher\ConnectionManager($config);
+$query = new Ackintosh\Higher\Query($connectionManager);
 
 $users = $repo->get('users');
 $orders = $repo->get('orders');
 
-$res = $users
-    ->select([
-        [$users, 'name'],
+$ret = $query->select([
+        [$users, 'name', 'addr'],
         [$orders, 'total'],
     ])
     ->join($orders, ['id' => 'user_id'])
@@ -32,6 +31,7 @@ $res = $users
             $expr->_or($users, ['id', '=', 3]);
         }
         )
+    ->useMaster()// use the master DB explicitly.
     ->execute();
 
 /**
@@ -50,8 +50,7 @@ $res = $users
  */
 
 
-$res = $users
-    ->insert(['name', 'created'])
+$ret = $query->insert($users, ['name', 'created'])
     ->values(['testname', date('Y-m-d H:i:s')])
     ->execute();
 

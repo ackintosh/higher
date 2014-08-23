@@ -15,7 +15,15 @@ class Builder
      */
     private $columns;
 
+    /**
+     * @var Ackintosh\Higher\ConnectionManager
+     */
     private $connectionManager;
+
+    /**
+     * @var bool
+     */
+    private $useMasterExplicitly = false;
 
     public function __construct($connectionManager)
     {
@@ -57,6 +65,13 @@ class Builder
         return $this;
     }
 
+    public function useMaster()
+    {
+        $this->useMasterExplicitly = true;
+
+        return $this;
+    }
+
     public function execute()
     {
         $executor = new Executor;
@@ -77,7 +92,8 @@ class Builder
 
     public function getConnection()
     {
-        return $this->connectionManager->get($this->main->getLocation());
+        $useSlave = ($this->useMasterExplicitly === true) ? false : $this->main->useSlave();
+        return $this->connectionManager->get($this->main->getLocation(), $useSlave);
     }
 
     public function afterExecute($statement)

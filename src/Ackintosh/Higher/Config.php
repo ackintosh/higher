@@ -60,8 +60,8 @@ class Config
         return $this->tableDir;
     }
 
-    public function getTableConnectionConfig($location)
+    public function getConnectionConfig($location, $role = 'master')
     {
-        return (isset($this->config[$location])) ? $this->config[$location] : $this->config['default'];
+        return (isset($this->config[$location][$role])) ? $this->config[$location][$role] : $this->config['default'][$role];
     }
 }

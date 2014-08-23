@@ -7,4 +7,13 @@ trait DML
     {
         return null;
     }
+
+    public function useSlave()
+    {
+        if (isset($this->useSlave)) {
+            return $this->useSlave;
+        }
+
+        return false;
+    }
 }

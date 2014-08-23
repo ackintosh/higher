@@ -13,6 +13,7 @@ Named "Higher" was inspired by this song. (｢ﾟДﾟ)｢ｶﾞｳｶﾞｳ
 [![MAN WITH A MISSION : higher](http://img.youtube.com/vi/RIBqsb5yIx8/0.jpg)](https://www.youtube.com/watch?v=RIBqsb5yIx8)
 
 ## Requirement
+PHP 5.4 or higher
 
 ## Usage
 ```php
@@ -49,6 +50,7 @@ $res = $query->select([
             $expr->_or($users, ['id', '=', 3]);
         }
         )
+    ->useMaster()// use the master DB explicitly.
     ->execute();
 ```
 
