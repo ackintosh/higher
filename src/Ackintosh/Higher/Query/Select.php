@@ -69,7 +69,7 @@ class Select implements DMLInterface
             $tableName = array_shift($col)->getName();
             $ret = [];
             foreach ($col as $c) {
-                $ret[] = "`{$tableName}`.`{$c}`";
+                $ret[] = "`{$tableName}`.`{$c}` as `{$tableName}.{$c}`";
             }
 
             return implode(',', $ret);
@@ -112,6 +112,6 @@ class Select implements DMLInterface
      */
     public function afterExecute($statement)
     {
-        return $statement->fetchAll();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

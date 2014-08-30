@@ -56,9 +56,9 @@ $res = $query->select([
 
 ```sql
 SELECT
-`users`.`name`,
-`users`.`addr`,
-`orders`.`total`
+`users`.`name` as `users.name`,
+`users`.`addr` as `users.addr`,
+`orders`.`total` as `orders.total`
 FROM
 `users`
 INNER JOIN `orders`
