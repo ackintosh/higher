@@ -85,6 +85,22 @@ $connectionManager->commit();
 INSERT INTO `users` ( `name`,`created` )  VALUES ( ?,? )
 ```
 
+### UPSERT
+```php
+<?php
+$connectionManager->begin();
+
+$res = $query->upsert($users, ['name', 'created'])
+    ->values(['testname', date('Y-m-d H:i:s')])
+    ->execute();
+
+$connectionManager->commit();
+```
+
+```sql
+INSERT INTO `users` ( `name`,`created` )  VALUES ( ?,? ) ON DULPLICATE KEY UPDATE `name` = ?,`created` = ?
+```
+
 
 
 ## Install

@@ -20,4 +20,9 @@ class Query
     {
         return (new Builder($this->connectionManager))->insert($table, $columns);
     }
+
+    public function upsert($table, $columns)
+    {
+        return (new Builder($this->connectionManager))->upsert($table, $columns);
+    }
 }

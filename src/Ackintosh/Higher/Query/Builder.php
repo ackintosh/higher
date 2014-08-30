@@ -1,6 +1,8 @@
 <?php
 namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Select;
+use Ackintosh\Higher\Query\Insert;
+use Ackintosh\Higher\Query\Upsert;
 use Ackintosh\Higher\Query\Executor;
 
 class Builder
@@ -54,6 +56,13 @@ class Builder
     public function insert($table, $columns)
     {
         $this->main = new Insert($table, $columns);
+
+        return $this;
+    }
+
+    public function upsert($table, $columns)
+    {
+        $this->main = new Upsert($table, $columns);
 
         return $this;
     }
