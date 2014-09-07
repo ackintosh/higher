@@ -25,4 +25,22 @@ class Query
     {
         return (new Builder($this->connectionManager))->upsert($table, $columns);
     }
+
+    /**
+     * @params  Ackintosh\Higher\Record  $record
+     * @return  Ackintosh\Higher\Record  $record
+     */
+    public function save($record)
+    {
+        $builder = (new Builder($this->connectionManager))
+            ->upsert($record->getTable(), $record->getColumnNames())
+            ->values($record->getValues());
+        $builder->execute();
+
+        if ($lastInsertId = $builder->getConnection()->lastInsertId()) {
+            $record->setSequenceValue($lastInsertId);
+        }
+
+        return $record;
+    }
 }

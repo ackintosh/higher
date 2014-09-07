@@ -101,6 +101,18 @@ $connectionManager->commit();
 INSERT INTO `users` ( `name`,`created` )  VALUES ( ?,? ) ON DULPLICATE KEY UPDATE `name` = ?,`created` = ?
 ```
 
+### OTHER
+```php
+<?php
+$u = $users->newRecord();
+$u->name = 'foo';
+$u->created = date('Y-m-d H:i:s');
+$query->save($u); // insert
+
+$u->name = 'bar';
+$query->save($u); // update
+```
+
 
 
 ## Install
