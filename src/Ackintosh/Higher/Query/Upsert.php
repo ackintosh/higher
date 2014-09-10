@@ -7,13 +7,12 @@ class Upsert implements DMLInterface
 {
     use DML;
 
-    private $table;
     private $columns;
     private $values;
 
     public function __construct($table, $columns)
     {
-        $this->table = $table;
+        $this->setTable($table);
         $this->columns = $columns;
         $this->values = [];
     }
@@ -62,11 +61,6 @@ class Upsert implements DMLInterface
         }
 
         return $values;
-    }
-
-    public function getLocation()
-    {
-        return $this->table->getLocation();
     }
 }
 

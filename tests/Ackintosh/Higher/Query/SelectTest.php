@@ -16,7 +16,6 @@ class SelectTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($columns, TestHelper::getPrivateProperty($select, 'columns'));
         $this->assertSame([], TestHelper::getPrivateProperty($select, 'joins'));
-        $this->assertSame([], TestHelper::getPrivateProperty($select, 'expressions'));
     }
 
     /**

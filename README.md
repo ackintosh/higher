@@ -100,6 +100,22 @@ $connectionManager->commit();
 ```sql
 INSERT INTO `users` ( `name`,`created` )  VALUES ( ?,? ) ON DULPLICATE KEY UPDATE `name` = ?,`created` = ?
 ```
+### UPDATE
+```php
+<?php
+$ret = $query->update($users)
+    ->set(['name' => 'foo', 'addr' => 'bar'])
+    ->where(
+        function ($expr) use ($users) {
+            $expr->_($users, ['id', '=', 2]);
+        }
+    )->execute();
+
+```
+
+```sql
+UPDATE users  SET `name` = ?, `addr` = ? WHERE  (  `users`.`id` = ? )
+```
 
 ### OTHER
 ```php

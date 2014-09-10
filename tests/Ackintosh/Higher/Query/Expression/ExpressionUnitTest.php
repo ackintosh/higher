@@ -1,12 +1,12 @@
 <?php
-use Ackintosh\Higher\Query\Expression\Manager;
+use Ackintosh\Higher\Query\Expression\ExpressionUnit;
 use Ackintosh\Higher\Table;
 
-class ManagerTest extends PHPUnit_Framework_TestCase
+class ExpressionUnitTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->manager = new Manager;
+        $this->unit = new ExpressionUnit;
     }
 
     /**
@@ -14,7 +14,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
      */
     public function constructorInitializesProperties()
     {
-        $this->assertSame([], TestHelper::getPrivateProperty($this->manager, 'exprs'));
+        $this->assertSame([], TestHelper::getPrivateProperty($this->unit, 'exprs'));
     }
 
     /**
@@ -22,8 +22,8 @@ class ManagerTest extends PHPUnit_Framework_TestCase
      */
     public function _andAddsObjectToProperty()
     {
-        $this->manager->_and(new Table, [0, 0, 0]);
-        $exprs = TestHelper::getPrivateProperty($this->manager, 'exprs');
+        $this->unit->_and(new Table, [0, 0, 0]);
+        $exprs = TestHelper::getPrivateProperty($this->unit, 'exprs');
 
         $this->assertInstanceOf('Ackintosh\Higher\Query\Expression\Andx', array_pop($exprs));
     }
@@ -33,8 +33,8 @@ class ManagerTest extends PHPUnit_Framework_TestCase
      */
     public function _orAddsObjectToProperty()
     {
-        $this->manager->_or(new Table, [0, 0, 0]);
-        $exprs = TestHelper::getPrivateProperty($this->manager, 'exprs');
+        $this->unit->_or(new Table, [0, 0, 0]);
+        $exprs = TestHelper::getPrivateProperty($this->unit, 'exprs');
 
         $this->assertInstanceOf('Ackintosh\Higher\Query\Expression\Orx', array_pop($exprs));
     }

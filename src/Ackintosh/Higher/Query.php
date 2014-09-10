@@ -26,6 +26,11 @@ class Query
         return (new Builder($this->connectionManager))->upsert($table, $columns);
     }
 
+    public function update($table)
+    {
+        return (new Builder($this->connectionManager))->update($table);
+    }
+
     /**
      * @params  Ackintosh\Higher\Record  $record
      * @return  Ackintosh\Higher\Record  $record

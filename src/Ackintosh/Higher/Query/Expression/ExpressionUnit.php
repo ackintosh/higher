@@ -3,7 +3,7 @@ namespace Ackintosh\Higher\Query\Expression;
 use Ackintosh\Higher\Query\Expression\Andx;
 use Ackintosh\Higher\Query\Expression\Orx;
 
-class Manager
+class ExpressionUnit
 {
     private $exprs;
 
