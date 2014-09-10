@@ -3,9 +3,11 @@ Higher
 [Work in progress]
 Higher is a ORM library, written in PHP.
 
-master : [![Build Status](https://travis-ci.org/ackintosh/higher.svg?branch=master)](https://travis-ci.org/ackintosh/higher)
+master : [![Build
+Status](https://travis-ci.org/ackintosh/higher.svg?branch=master)](https://travis-ci.org/ackintosh/higher) [![Coverage Status](https://coveralls.io/repos/ackintosh/higher/badge.png?branch=develop)](https://coveralls.io/r/ackintosh/higher?branch=master)
 
-develop : [![Build Status](https://travis-ci.org/ackintosh/higher.svg?branch=develop)](https://travis-ci.org/ackintosh/higher)
+develop : [![Build Status](https://travis-ci.org/ackintosh/higher.svg?branch=develop)](https://travis-ci.org/ackintosh/higher) [![Coverage Status](https://coveralls.io/repos/ackintosh/higher/badge.png?branch=develop)](https://coveralls.io/r/ackintosh/higher?branch=develop)
+
 
 ## Description
 Named "Higher" was inspired by this song. (｢ﾟДﾟ)｢ gow gow
