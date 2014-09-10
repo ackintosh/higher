@@ -61,7 +61,10 @@ class Select implements DMLInterface
         return;
     }
 
-    public function toString()
+    /**
+     * @override \Ackintosh\Higher\Interfaces\DML::getSql()
+     */
+    public function getSql()
     {
         $str = 'SELECT ';
 
@@ -76,7 +79,6 @@ class Select implements DMLInterface
         }, $this->columns);
 
         $sql = $str . implode(',', $columns);
-
         $sql .= ' FROM `' . $this->from->getName() . '`';
 
         foreach ($this->joins as $j) {
@@ -86,7 +88,7 @@ class Select implements DMLInterface
         if (count($this->expressions) > 0) {
             $sql .= ' WHERE ';
         }
-        $values = [];
+
         foreach ($this->expressions as $expr) {
             if (is_string($expr)) {
                 $sql .= $expr;
@@ -94,12 +96,28 @@ class Select implements DMLInterface
             }
 
             $sql .= ' ( ' . $expr->toString() . ' ) ';
+        }
+
+        return $sql;
+    }
+
+    /**
+     * @override \Ackintosh\Higher\Interfaces\DML::getValues()
+     */
+    public function getValues()
+    {
+        $values = [];
+        foreach ($this->expressions as $expr) {
+            if (is_string($expr)) {
+                continue;
+            }
+
             foreach ($expr->getValues() as $v) {
                 $values[] = $v;
             }
         }
 
-        return [$sql, $values];
+        return $values;
     }
 
     public function getLocation()

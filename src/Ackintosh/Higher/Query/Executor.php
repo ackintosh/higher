@@ -5,9 +5,9 @@ class Executor
 {
     public function perform($builder)
     {
-        list($sql, $values) = $builder->toString();
-        $statement = $builder->getConnection()->prepare($sql);
-        $statement->execute($values);
+        $sql = $builder->getSql();
+        $statement = $builder->getConnection()->prepare($sql->getSql());
+        $statement->execute($sql->getValues());
 
         return $builder->afterExecute($statement);
     }

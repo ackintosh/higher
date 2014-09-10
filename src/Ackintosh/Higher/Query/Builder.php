@@ -4,6 +4,7 @@ use Ackintosh\Higher\Query\Select;
 use Ackintosh\Higher\Query\Insert;
 use Ackintosh\Higher\Query\Upsert;
 use Ackintosh\Higher\Query\Executor;
+use Ackintosh\Higher\Query\Sql;
 
 class Builder
 {
@@ -94,9 +95,9 @@ class Builder
         return $this;
     }
 
-    public function toString()
+    public function getSql()
     {
-        return $this->main->toString();
+        return new Sql($this->main->getSql(), $this->main->getValues());
     }
 
     public function getConnection()

@@ -25,7 +25,10 @@ class Insert implements DMLInterface
         return;
     }
 
-    public function toString()
+    /**
+     * @override \Ackintosh\Higher\Interfaces\DML::getSql()
+     */
+    public function getSql()
     {
         $sql = 'INSERT INTO `' . $this->table->getName() .'`';
 
@@ -38,7 +41,15 @@ class Insert implements DMLInterface
 
         $sql .= ' VALUES ( ' . implode(',', array_fill(0, count($this->values), '?')) . ' ) ';
 
-        return [$sql, $this->values];
+        return $sql;
+    }
+
+    /**
+     * @override \Ackintosh\Higher\Interfaces\DML::getValues()
+     */
+    public function getValues()
+    {
+        return $this->values;
     }
 
     public function getLocation()

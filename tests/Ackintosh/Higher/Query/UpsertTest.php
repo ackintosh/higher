@@ -35,20 +35,33 @@ class UpsertTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function toString()
+    public function getSql()
     {
         $table = new Table;
         $columns = ['test1', 'test2'];
         $values = ['value1', 'value2'];
         $upsert = new Upsert($table, $columns);
         $upsert->values($values);
-        $ret = $upsert->toString();
+        $actual = $upsert->getSql();
 
-        $this->assertSame(2, count($ret));
 
         $expectSql = 'INSERT INTO `table` ( `test1`,`test2` )  VALUES ( ?,? ) ON DUPLICATE KEY UPDATE `test1` = ?,`test2` = ?';
+        $this->assertSame($expectSql, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function getValues()
+    {
+        $table = new Table;
+        $columns = ['test1', 'test2'];
+        $values = ['value1', 'value2'];
+        $upsert = new Upsert($table, $columns);
+        $upsert->values($values);
+        $actual = $upsert->getValues();
+
         $expectValues = ['value1', 'value2', 'value1', 'value2'];
-        $this->assertSame($expectSql, $ret[0]);
-        $this->assertSame($expectValues, $ret[1]);
+        $this->assertSame($expectValues, $actual);
     }
 }

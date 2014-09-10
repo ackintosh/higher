@@ -25,7 +25,10 @@ class Upsert implements DMLInterface
         return;
     }
 
-    public function toString()
+    /**
+     * @override \Ackintosh\Higher\Interfaces\DML::getSql()
+     */
+    public function getSql()
     {
         $sql = 'INSERT INTO `' . $this->table->getName() .'`';
 
@@ -45,12 +48,20 @@ class Upsert implements DMLInterface
 
         $sql .= 'ON DUPLICATE KEY UPDATE ' . implode(',', $updateArr);
 
+        return $sql;
+    }
+
+    /**
+     * @override \Ackintosh\Higher\Interfaces\DML::getValues()
+     */
+    public function getValues()
+    {
         $values = $this->values;
         foreach ($this->values as $val) {
             $values[] = $val;
         }
 
-        return [$sql, $values];
+        return $values;
     }
 
     public function getLocation()
