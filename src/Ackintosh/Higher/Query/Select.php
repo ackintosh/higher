@@ -1,67 +1,51 @@
 <?php
 namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Join;
-use Ackintosh\Higher\Query\Expression\Manager;
+use Ackintosh\Higher\Query\Expression\ExpressionUnit;
 use Ackintosh\Higher\Interfaces\DML as DMLInterface;
 use Ackintosh\Higher\Traits\DML;
+use Ackintosh\Higher\Traits\Selectable;
 
 class Select implements DMLInterface
 {
-    use DML;
+    use DML, Selectable;
 
     /**
      * @see DML::useSlave()
      */
     protected $useSlave = true;
 
+    /**
+     * @var array
+     */
     private $columns;
 
     /**
-     * @var Ackintosh\Higher\Table
+     * @var array
      */
-    private $from;
-
     private $joins;
-    private $expressions;
 
     public function __construct($columns)
     {
         $this->columns = $columns;
         $this->joins = [];
-        $this->expressions = [];
     }
 
     public function from($table)
     {
-        $this->from = $table;
+        $this->setTable($table);
     }
 
     public function join($table, Array $on)
     {
-        $this->joins[] = new Join($this->from, $table, $on);
-
+        $this->joins[] = new Join($this->table, $table, $on);
         return;
     }
 
-    public function where()
-    {
-        $args = func_get_args();
-
-        foreach ($args as $arg) {
-            if (is_string($arg)) {
-                $this->expressions[] = $arg;
-                continue;
-            }
-
-            $expr = new Manager;
-            call_user_func_array($arg, [$expr]);
-            $this->expressions[] = $expr;
-        }
-
-        return;
-    }
-
-    public function toString()
+    /**
+     * @override \Ackintosh\Higher\Interfaces\DML::getSql()
+     */
+    public function getSql()
     {
         $str = 'SELECT ';
 
@@ -69,49 +53,37 @@ class Select implements DMLInterface
             $tableName = array_shift($col)->getName();
             $ret = [];
             foreach ($col as $c) {
-                $ret[] = "`{$tableName}`.`{$c}`";
+                $ret[] = "`{$tableName}`.`{$c}` as `{$tableName}.{$c}`";
             }
 
             return implode(',', $ret);
         }, $this->columns);
 
         $sql = $str . implode(',', $columns);
-
-        $sql .= ' FROM `' . $this->from->getName() . '`';
+        $sql .= ' FROM `' . $this->table->getName() . '`';
 
         foreach ($this->joins as $j) {
             $sql .= ' ' . $j->toString();
         }
 
-        if (count($this->expressions) > 0) {
-            $sql .= ' WHERE ';
-        }
-        $values = [];
-        foreach ($this->expressions as $expr) {
-            if (is_string($expr)) {
-                $sql .= $expr;
-                continue;
-            }
+        $sql .= $this->where->toString();
 
-            $sql .= ' ( ' . $expr->toString() . ' ) ';
-            foreach ($expr->getValues() as $v) {
-                $values[] = $v;
-            }
-        }
-
-        return [$sql, $values];
-    }
-
-    public function getLocation()
-    {
-        return $this->from->getLocation();
+        return $sql;
     }
 
     /**
-     * @override    DML::afterExecute($statement)
+     * @override \Ackintosh\Higher\Interfaces\DML::getValues()
+     */
+    public function getValues()
+    {
+        return $this->where->getValues();
+    }
+
+    /**
+     * @override    \Ackintosh\Higher\Traits\DML::afterExecute($statement)
      */
     public function afterExecute($statement)
     {
-        return $statement->fetchAll();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

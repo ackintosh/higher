@@ -3,6 +3,11 @@ namespace Ackintosh\Higher\Traits;
 
 trait DML
 {
+    /**
+     * @var \Ackintosh\Higher\Table
+     */
+    private $table;
+
     public function afterExecute($statement)
     {
         return null;
@@ -15,5 +20,15 @@ trait DML
         }
 
         return false;
+    }
+
+    private function setTable($table)
+    {
+        $this->table = $table;
+    }
+
+    public function getLocation()
+    {
+        return $this->table->getLocation();
     }
 }

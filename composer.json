@@ -15,7 +15,8 @@
       "symfony/yaml": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "*"
+    "phpunit/phpunit": "*",
+    "satooshi/php-coveralls": "*"
   },
   "autoload": {
     "psr-0": {

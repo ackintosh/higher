@@ -20,4 +20,12 @@ class TestHelper
 
         return $prop->getValue($class);
     }
+
+    public static function setPrivateProperty($class, $propName, $value)
+    {
+        $reflectionClass = new \ReflectionClass(get_class($class));
+        $prop = $reflectionClass->getProperty($propName);
+        $prop->setAccessible(true);
+        $prop->setValue($class, $value);
+    }
 }

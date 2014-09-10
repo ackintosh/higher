@@ -1,7 +1,11 @@
 <?php
 namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Query\Select;
+use Ackintosh\Higher\Query\Insert;
+use Ackintosh\Higher\Query\Upsert;
+use Ackintosh\Higher\Query\Update;
 use Ackintosh\Higher\Query\Executor;
+use Ackintosh\Higher\Query\Sql;
 
 class Builder
 {
@@ -33,28 +37,36 @@ class Builder
     public function select($columns)
     {
         $this->main = new Select($columns);
-
         return $this;
     }
 
     public function from($from)
     {
         $this->main->from($from);
-
         return $this;
     }
 
     public function join($table, Array $on)
     {
         $this->main->join($table, $on);
-
         return $this;
     }
 
     public function insert($table, $columns)
     {
         $this->main = new Insert($table, $columns);
+        return $this;
+    }
 
+    public function upsert($table, $columns)
+    {
+        $this->main = new Upsert($table, $columns);
+        return $this;
+    }
+
+    public function update($table)
+    {
+        $this->main = new Update($table);
         return $this;
     }
 
@@ -81,13 +93,18 @@ class Builder
     public function where()
     {
         call_user_func_array([$this->main, 'where'], func_get_args());
-
         return $this;
     }
 
-    public function toString()
+    public function set(Array $params)
     {
-        return $this->main->toString();
+        $this->main->set($params);
+        return $this;
+    }
+
+    public function getSql()
+    {
+        return new Sql($this->main->getSql(), $this->main->getValues());
     }
 
     public function getConnection()

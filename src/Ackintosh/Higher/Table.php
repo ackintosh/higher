@@ -1,6 +1,7 @@
 <?php
 namespace Ackintosh\Higher;
 use Ackintosh\Higher\Query\Builder;
+use Ackintosh\Higher\Table\Record;
 
 class Table
 {
@@ -13,6 +14,22 @@ class Table
      * @var string
      */
     protected $location;
+
+    /**
+     * @var array
+     *
+     * [
+     *  'id'        => ['int', 'sequence'],
+     *  'name'      => ['varchar'],
+     *  'created'   => ['datetime'],
+     * ]
+     */
+    protected $schema = [];
+
+    /**
+     * @var array
+     */
+    protected $columns = [];
 
     public function __construct()
     {
@@ -36,5 +53,13 @@ class Table
     public function getLocation()
     {
         return $this->location;
+    }
+
+    public function newRecord()
+    {
+        $r = new Record($this);
+        $r->setColumns($this->schema);
+
+        return $r;
     }
 }

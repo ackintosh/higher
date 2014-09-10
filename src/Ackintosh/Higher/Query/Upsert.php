@@ -3,7 +3,7 @@ namespace Ackintosh\Higher\Query;
 use Ackintosh\Higher\Interfaces\DML as DMLInterface;
 use Ackintosh\Higher\Traits\DML;
 
-class Insert implements DMLInterface
+class Upsert implements DMLInterface
 {
     use DML;
 
@@ -40,6 +40,13 @@ class Insert implements DMLInterface
 
         $sql .= ' VALUES ( ' . implode(',', array_fill(0, count($this->values), '?')) . ' ) ';
 
+        $updateArr = [];
+        foreach ($this->columns as $col) {
+            $updateArr[] = "`{$col}` = ?";
+        }
+
+        $sql .= 'ON DUPLICATE KEY UPDATE ' . implode(',', $updateArr);
+
         return $sql;
     }
 
@@ -48,7 +55,12 @@ class Insert implements DMLInterface
      */
     public function getValues()
     {
-        return $this->values;
+        $values = $this->values;
+        foreach ($this->values as $val) {
+            $values[] = $val;
+        }
+
+        return $values;
     }
 }
 
